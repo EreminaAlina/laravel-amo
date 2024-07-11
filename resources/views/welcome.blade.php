@@ -4,12 +4,14 @@ const TOKEN_FILE = 'token_info.json';
 
 use AmoCRM\Client\AmoCRMApiClient;
 use App\Models\Clients;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
+use STS\JWT\Facades\JWT;
+
+$output = new \Symfony\Component\Console\Output\ConsoleOutput();
+
 
 session_start();
-
-$apiClient = new AmoCRMApiClient("013864f5-0431-416e-b179-ee2751ae8606", 'i8ck0WS06Q7pJ7VZGoG11Ee8FZOphYAw1KWAFKE69Tm9AS1AEptwaVAKkx0zqYgA', 'http://localhost:8001/');
+$client_id = "013864f5-0431-416e-b179-ee2751ae8606";
+$apiClient = new AmoCRMApiClient($client_id, 'i8ck0WS06Q7pJ7VZGoG11Ee8FZOphYAw1KWAFKE69Tm9AS1AEptwaVAKkx0zqYgA', 'http://localhost:8001/');
 
 if (isset($_GET['referer'])) {
     $apiClient->setAccountBaseDomain($_GET['referer']);
@@ -46,80 +48,35 @@ if (!isset($_GET['request'])) {
      */
     try {
         $accessToken = $apiClient->getOAuthClient()->getAccessTokenByCode($_GET['code']);
-
+        $account_id = JWT::parse($accessToken->getToken())->get("account_id");
+//        $output->writeln();
         if (!$accessToken->hasExpired()) {
             saveToken([
+                'id' => $account_id,
                 'accessToken' => $accessToken->getToken(),
                 'refreshToken' => $accessToken->getRefreshToken(),
                 'expires' => $accessToken->getExpires(),
                 'baseDomain' => $apiClient->getAccountBaseDomain(),
             ]);
+        } else {
+            printf("Token is expired, reload page");
         }
     } catch (Exception $e) {
         die((string)$e);
     }
-} else {
-    $accessToken = getToken();
-
-    $apiClient->setAccessToken($accessToken)
-        ->setAccountBaseDomain($accessToken->getValues()['baseDomain'])
-        ->onAccessTokenRefresh(
-            function (\League\OAuth2\Client\Token\AccessTokenInterface $accessToken, string $baseDomain) {
-                saveToken(
-                    [
-                        'accessToken' => $accessToken->getToken(),
-                        'refreshToken' => $accessToken->getRefreshToken(),
-                        'expires' => $accessToken->getExpires(),
-                        'baseDomain' => $baseDomain,
-                    ]
-                );
-            });
-
 }
 
 
 function saveToken($accessToken)
 {
     if (
-        isset($accessToken)
+        isset($accessToken['id'])
         && isset($accessToken['accessToken'])
         && isset($accessToken['refreshToken'])
         && isset($accessToken['expires'])
         && isset($accessToken['baseDomain'])
     ) {
-//        $data = {
-//            accessToken: $accessToken['accessToken'],
-//            refreshToken: $accessToken['refreshToken'],
-//            expires: $accessToken['expires'],
-//            baseDomain: $accessToken['baseDomain'],
-//        }
         Clients::createClient($accessToken);
-
-    } else {
-        exit('Invalid access token ' . var_export($accessToken, true));
-    }
-}
-
-/**
- * @return \League\OAuth2\Client\Token\AccessToken
- */
-function getToken()
-{
-    $accessToken = Storage::json(TOKEN_FILE);
-
-    if (
-        isset($accessToken)
-        && isset($accessToken['accessToken'])
-        && isset($accessToken['refreshToken'])
-        && isset($accessToken['expires'])
-        && isset($accessToken['baseDomain'])
-    ) {
-        return new \League\OAuth2\Client\Token\AccessToken([
-            'access_token' => $accessToken['accessToken'],
-            'refresh_token' => $accessToken['refreshToken'],
-            'expires' => $accessToken['expires'],
-            'baseDomain' => $accessToken['baseDomain'],
-        ]);
     } else {
         exit('Invalid access token ' . var_export($accessToken, true));
     }

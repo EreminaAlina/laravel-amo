@@ -9,14 +9,19 @@ class Clients extends Model
 {
     use HasFactory;
 
+    public $incrementing = false;
+
     protected $fillable = [
+        'id',
         'accessToken',
         'refreshToken',
         'expires',
         'baseDomain',
     ];
 
+    protected $primaryKey = 'id';
+
     public static function createClient($client){
-        return self::create($client);
+        return self::updateOrCreate(['id' => $client['id']], $client);
     }
 }

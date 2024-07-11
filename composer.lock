@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c03f147975ebee62d47297ac69ec88c6",
+    "content-hash": "66cab8667341ce45257e823f873f9757",
     "packages": [
         {
             "name": "amocrm/amocrm-api-library",
@@ -3617,6 +3617,62 @@
                 }
             ],
             "time": "2024-04-27T21:32:50+00:00"
+        },
+        {
+            "name": "stechstudio/laravel-jwt",
+            "version": "2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stechstudio/laravel-jwt.git",
+                "reference": "6de4be73ad720bb237422af9e5f8628c49cd6f02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stechstudio/laravel-jwt/zipball/6de4be73ad720bb237422af9e5f8628c49cd6f02",
+                "reference": "6de4be73ad720bb237422af9e5f8628c49cd6f02",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+                "lcobucci/jwt": "^4.3",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^7.0",
+                "phpunit/phpunit": "~9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "STS\\JWT\\JWTServiceProvider"
+                    ],
+                    "aliases": {
+                        "JWT": "STS\\JWT\\Facades\\JWT"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "STS\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joseph",
+                    "email": "joseph@stechstudio.com"
+                }
+            ],
+            "description": "Helper package that makes it easy to generate, consume, and protect routes with JWT tokens in Laravel",
+            "support": {
+                "issues": "https://github.com/stechstudio/laravel-jwt/issues",
+                "source": "https://github.com/stechstudio/laravel-jwt/tree/2.3"
+            },
+            "time": "2024-03-12T23:18:06+00:00"
         },
         {
             "name": "stella-maris/clock",
