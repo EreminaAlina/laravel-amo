@@ -32,7 +32,7 @@ class Controller extends BaseController
             'client_secret' => 'i8ck0WS06Q7pJ7VZGoG11Ee8FZOphYAw1KWAFKE69Tm9AS1AEptwaVAKkx0zqYgA',
             'subdomain' => 'itweltintegration.amocrm.ru',
             'access_token' => $accessToken->getToken(),
-            'redirect_uri' => 'https://51bc-81-23-165-131.ngrok-free.app/api/auth',
+            'redirect_uri' => 'https://1faf-81-23-165-131.ngrok-free.app/api/auth',
             'token_type' => $accessToken->getValues()['token_type'],
             'refresh_token' => $accessToken->getRefreshToken(),
             'expires_in' => time() + $accessToken->getExpires(),

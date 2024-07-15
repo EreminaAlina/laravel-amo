@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\LeadsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/auth', [Controller::class, 'auth']);
 
-Route::post('/leads', [Controller::class, 'index']);
+Route::post('/leads', [LeadsController::class, 'change_stage']);
