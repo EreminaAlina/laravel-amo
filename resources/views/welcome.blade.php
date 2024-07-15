@@ -3,7 +3,7 @@
 const TOKEN_FILE = 'token_info.json';
 
 use AmoCRM\Client\AmoCRMApiClient;
-use App\Models\Clients;
+use App\Models\amoCRM;
 use STS\JWT\Facades\JWT;
 
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
@@ -76,7 +76,7 @@ function saveToken($accessToken)
         && isset($accessToken['expires'])
         && isset($accessToken['baseDomain'])
     ) {
-        Clients::createClient($accessToken);
+        amoCRM::createClient($accessToken);
     } else {
         exit('Invalid access token ' . var_export($accessToken, true));
     }
