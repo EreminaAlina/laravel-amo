@@ -29,10 +29,10 @@ class Controller extends BaseController
 
         $authData = [
             'client_id' => $params['client_id'],
-            'client_secret' => 'i8ck0WS06Q7pJ7VZGoG11Ee8FZOphYAw1KWAFKE69Tm9AS1AEptwaVAKkx0zqYgA',
-            'subdomain' => 'itweltintegration.amocrm.ru',
+            'client_secret' => env('AMOCRM_CLIENT_SECRET'),
+            'subdomain' => env('AMOCRM_SUBDOMAIN'),
             'access_token' => $accessToken->getToken(),
-            'redirect_uri' => 'https://1faf-81-23-165-131.ngrok-free.app/api/auth',
+            'redirect_uri' => env('AMOCRM_REDIRECT_URI'),
             'token_type' => $accessToken->getValues()['token_type'],
             'refresh_token' => $accessToken->getRefreshToken(),
             'expires_in' => time() + $accessToken->getExpires(),

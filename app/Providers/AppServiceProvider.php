@@ -16,8 +16,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(AmoCRMApiClient::class, function (Application $app) {
-            $amoClient = new AmoCRMApiClient('013864f5-0431-416e-b179-ee2751ae8606', 'i8ck0WS06Q7pJ7VZGoG11Ee8FZOphYAw1KWAFKE69Tm9AS1AEptwaVAKkx0zqYgA', 'https://1faf-81-23-165-131.ngrok-free.app/api/auth');
-            $amoClient->setAccountBaseDomain('itweltintegration.amocrm.ru');
+            $amoClient = new AmoCRMApiClient('013864f5-0431-416e-b179-ee2751ae8606', env('AMOCRM_CLIENT_SECRET'), env('AMOCRM_REDIRECT_URI'));
+            $amoClient->setAccountBaseDomain(env('AMOCRM_SUBDOMAIN'));
 
             return $amoClient;
         });
@@ -30,8 +30,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $amoIntegration = AmoCRM::where('client_id', '013864f5-0431-416e-b179-ee2751ae8606')->first();
 
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln(json_encode($amoIntegration));
+//        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+//        $out->writeln(json_encode($amoIntegration));
 
         if ($amoIntegration) {
             $hui = [
