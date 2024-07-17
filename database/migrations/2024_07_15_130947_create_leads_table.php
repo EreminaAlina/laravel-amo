@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('amo_id');
-            $table->bigInteger('amo_status_id');
-            $table->bigInteger('lead_id')->nullable();
+            $table->string('lead_id');
+            $table->bigInteger('last_modified');
+            $table->text('data');
             $table->timestamps();
         });
     }

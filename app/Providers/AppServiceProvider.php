@@ -34,13 +34,13 @@ class AppServiceProvider extends ServiceProvider
 //        $out->writeln(json_encode($amoIntegration));
 
         if ($amoIntegration) {
-            $hui = [
+            $tokenData = [
                 'access_token' => $amoIntegration->access_token,
                 'refresh_token' => $amoIntegration->refresh_token,
                 'resource_owner_id' => $amoIntegration->client_id,
                 'expires_in'=> $amoIntegration->expires_in,
             ];
-            $amoClient->setAccessToken(new AccessToken($hui));
+            $amoClient->setAccessToken(new AccessToken($tokenData));
         }
     }
 }

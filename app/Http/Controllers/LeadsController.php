@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use AmoCRM\Client\AmoCRMApiClient;
-use AmoCRM\Collections\NotesCollection;
-use AmoCRM\Helpers\EntityTypesInterface;
-use AmoCRM\Models\NoteType\ServiceMessageNote;
+use App\Models\Leads;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -24,17 +22,24 @@ class LeadsController extends BaseController
 
     public function change_stage(Request $request): array|string|null
     {
-        $lead_id = $request->all()['leads']['status'][0]['id'];
-
-        $notesCollection = new NotesCollection();
-        $serviceMessageNote = new ServiceMessageNote();
-        $serviceMessageNote->setEntityId($lead_id)
-            ->setText('Текст примечания')
-            ->setService('Тестовая интеграция');
-        $notesCollection->add($serviceMessageNote);
-
-        $this->amoCRMApiClient->notes(EntityTypesInterface::LEADS)->add($notesCollection);
+        $lead = $request->all()['leads']['status'][0];
+        $this->handle($lead);
 
         return response(['OK'], 200);
+    }
+
+    private function handle(array $data)
+    {
+        if (isset($data['id'])) {
+            $lead = Leads::getLeadById($data['id']);
+
+            if($lead) {
+                if ($lead->last_modified < (int) $data['last_modified']) {
+                    Leads::updateLead($data['id'], $data['last_modified'], $data);
+                }
+            }  else {
+                Leads::createLead($data['id'], $data['last_modified'], $data);
+            }
+        }
     }
 }
