@@ -20,6 +20,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/auth', [Controller::class, 'auth']);
+Route::prefix('auth')->group(function () {
+    Route::get('/signin', [Controller::class, 'signin']);
+    Route::get('/signout', [Controller::class, 'signout']);
+});
+
 
 Route::post('/leads', [LeadsController::class, 'change_stage']);

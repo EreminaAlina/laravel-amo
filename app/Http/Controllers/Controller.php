@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use AmoCRM\Client\AmoCRMApiClient;
 use App\Models\AmoCRM;
+use App\Models\Leads;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -20,7 +21,7 @@ class Controller extends BaseController
         $this->amoCRMApiClient = $amoCRMApiClient;
     }
 
-    public function auth(Request $request)
+    public function signin(Request $request)
     {
         $params = $request->all();
 
@@ -38,6 +39,15 @@ class Controller extends BaseController
             'expires_in' => time() + $accessToken->getExpires(),
         ];
         AmoCRM::create($authData);
+
+        return response(['OK'], 200);
+    }
+
+    public function signout(Request $request){
+        $params = $request->all();
+
+        AmoCRM::where("client_id", $params['client_uuid'])->delete();
+        Leads::query()->delete();
 
         return response(['OK'], 200);
     }
