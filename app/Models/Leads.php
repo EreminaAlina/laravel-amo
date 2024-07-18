@@ -12,22 +12,25 @@ class Leads extends Model
     protected $fillable = [
         'lead_id',
         'last_modified',
+        'pipeline_id',
         'data',
     ];
 
-    public static function createLead(string $leadId, int $lastModified, array $data): void
+    public static function createLead(string $leadId, int $lastModified, string $pipeline_id, array $data): void
     {
         self::create([
             'lead_id'       => $leadId,
             'last_modified' => (int) $lastModified,
+            'pipeline_id'   => $pipeline_id,
             'data'          => json_encode($data),
         ]);
     }
 
-    public static function updateLead(string $leadId, int $lastModified, array $data): void
+    public static function updateLead(string $leadId, int $lastModified, string $pipeline_id, array $data): void
     {
         self::where('lead_id', $leadId)->update([
             'last_modified' => (int) $lastModified,
+            'pipeline_id'   => $pipeline_id,
             'data'          => json_encode($data),
         ]);
     }

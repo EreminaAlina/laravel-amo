@@ -35,10 +35,10 @@ class LeadsController extends BaseController
 
             if($lead) {
                 if ($lead->last_modified < (int) $data['last_modified']) {
-                    Leads::updateLead($data['id'], $data['last_modified'], $data);
+                    Leads::updateLead($data['id'], $data['last_modified'], $data['pipeline_id'], $data);
                 }
             }  else {
-                Leads::createLead($data['id'], $data['last_modified'], $data);
+                Leads::createLead($data['id'], $data['last_modified'], $data['pipeline_id'], $data);
             }
         }
     }

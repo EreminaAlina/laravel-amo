@@ -42,7 +42,7 @@ class UpdateLeadsJob implements ShouldQueue
 
             $pipeline1 = null;
             foreach ($pipelinesCollection->toArray() as $pipeline) {
-                if ($pipeline['name'] == 'evalite-dev') {
+                if ($pipeline['id'] == $lead['pipeline_id']) {
                     $pipeline1 = $pipeline;
                 }
             }

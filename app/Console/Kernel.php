@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             UpdateLeadsJob::dispatch();
         })
-            ->everyThirtySeconds();
+            ->withoutOverlapping()
+            ->everyFiveMinutes();
 
     }
 

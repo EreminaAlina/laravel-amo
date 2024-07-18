@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('lead_id');
             $table->bigInteger('last_modified');
+            $table->string('pipeline_id');
             $table->text('data');
             $table->timestamps();
         });
