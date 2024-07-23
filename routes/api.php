@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LeadsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,8 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('auth')->group(function () {
-    Route::get('/signin', [Controller::class, 'signin']);
-    Route::get('/signout', [Controller::class, 'signout']);
+    Route::get('/signin', [AuthController::class, 'signin']);
+    Route::get('/signout', [AuthController::class, 'signout']);
 });
 
 
