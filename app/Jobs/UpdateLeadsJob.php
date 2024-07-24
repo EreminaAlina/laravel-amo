@@ -17,15 +17,7 @@ use Illuminate\Support\Facades\Log;
 
 class UpdateLeadsJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    /**
-     * Create a new job instance.
-     */
-    public function __construct()
-    {
-
-    }
+    use Queueable;
 
     /**
      * Execute the job.
@@ -36,7 +28,7 @@ class UpdateLeadsJob implements ShouldQueue
             try {
                 $pipelinesCollection = $amoCRMApiClient->pipelines()->get();
             } catch (AmoCRMApiException $e) {
-                printError($e);
+                Log::error($e);
                 die;
             }
 

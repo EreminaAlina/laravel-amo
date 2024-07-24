@@ -18,7 +18,17 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(AmoCRMApiClient::class, function (Application $app) {
             $amoClient = new AmoCRMApiClient('013864f5-0431-416e-b179-ee2751ae8606', env('AMOCRM_CLIENT_SECRET'), env('AMOCRM_REDIRECT_URI'));
             $amoClient->setAccountBaseDomain(env('AMOCRM_SUBDOMAIN'));
+            $amoIntegration = AmoCRM::limit(1)->first();
+            if ($amoIntegration) {
 
+                $tokenData = [
+                    'access_token' => $amoIntegration->access_token,
+                    'refresh_token' => $amoIntegration->refresh_token,
+                    'resource_owner_id' => $amoIntegration->client_id,
+                    'expires_in'=> $amoIntegration->expires_in,
+                ];
+                $amoClient->setAccessToken(new AccessToken($tokenData));
+            }
             return $amoClient;
         });
     }
@@ -26,21 +36,8 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(AmoCRMApiClient $amoClient): void
+    public function boot(): void
     {
-        $amoIntegration = AmoCRM::where('client_id', '013864f5-0431-416e-b179-ee2751ae8606')->first();
 
-//        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-//        $out->writeln(json_encode($amoIntegration));
-
-        if ($amoIntegration) {
-            $tokenData = [
-                'access_token' => $amoIntegration->access_token,
-                'refresh_token' => $amoIntegration->refresh_token,
-                'resource_owner_id' => $amoIntegration->client_id,
-                'expires_in'=> $amoIntegration->expires_in,
-            ];
-            $amoClient->setAccessToken(new AccessToken($tokenData));
-        }
     }
 }

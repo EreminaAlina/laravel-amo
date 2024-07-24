@@ -13,12 +13,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->call(function () {
-            UpdateLeadsJob::dispatch();
-        })
+        $schedule->job(new UpdateLeadsJob)
             ->withoutOverlapping()
-            ->everyFiveMinutes();
-
+            ->everyThirtySeconds();
     }
 
     /**
